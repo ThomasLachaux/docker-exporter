@@ -81,15 +81,5 @@
         }
       }
     ]
-  },
-
-  // Disable for tests the no unused expressions (doesn't work with chai expects)
-  "overrides": [
-    {
-      "files": "tests/**/*.test.ts",
-      "rules": {
-        "no-unused-expressions": "off"
-      }
-    }
-  ]
+  }
 }

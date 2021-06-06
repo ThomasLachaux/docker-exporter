@@ -1,5 +1,4 @@
 import { Request } from 'express';
-import { ConsoleTransportInstance } from 'winston/lib/winston/transports';
 import split from 'split';
 import http from 'http';
 import morganMiddleware from 'morgan';
@@ -7,24 +6,20 @@ import { createLogger, format, transports } from 'winston';
 import moment from 'moment';
 
 const getIp = (request: Request | http.IncomingMessage): string =>
-  (request.headers['x-forwarded-for'] as string) || request.connection.remoteAddress || request.socket.remoteAddress;
+  (request.headers['x-forwarded-for'] as string) || request.socket.remoteAddress;
 
 // Create console Transport
 const { combine, colorize, printf, errors } = format;
-const consoleTransport = new transports.Console({
+
+const logger = createLogger({
   format: combine(
     colorize(),
     errors({ stack: true }),
-    printf(({ level, message }) => `${moment().format('HH:mm:ss')} ${level}: ${message}`),
+    printf(
+      ({ level, message, stack }) => `${moment().format('HH:mm:ss')} ${level}: ${message} ${stack ? `\n${stack}` : ''}`,
+    ),
   ),
-  level: 'silly',
-});
-
-const loggingTransports: Array<ConsoleTransportInstance> = [consoleTransport];
-
-// Create the production/development logger
-const logger = createLogger({
-  transports: loggingTransports,
+  transports: [new transports.Console()],
 });
 
 export default logger;
