@@ -4,6 +4,7 @@ import http from 'http';
 import morganMiddleware from 'morgan';
 import { createLogger, format, transports } from 'winston';
 import moment from 'moment';
+import env from './env';
 
 const getIp = (request: Request | http.IncomingMessage): string =>
   (request.headers['x-forwarded-for'] as string) || request.socket.remoteAddress;
@@ -11,14 +12,19 @@ const getIp = (request: Request | http.IncomingMessage): string =>
 // Create console Transport
 const { combine, colorize, printf, errors } = format;
 
-const logger = createLogger({
-  format: combine(
-    colorize(),
-    errors({ stack: true }),
-    printf(
-      ({ level, message, stack }) => `${moment().format('HH:mm:ss')} ${level}: ${message} ${stack ? `\n${stack}` : ''}`,
-    ),
+const formats = [
+  errors({ stack: true }),
+  printf(
+    ({ level, message, stack }) => `${moment().format('HH:mm:ss')} ${level}: ${message} ${stack ? `\n${stack}` : ''}`,
   ),
+];
+
+if (env.development) {
+  formats.unshift(colorize());
+}
+
+const logger = createLogger({
+  format: combine(...formats),
   transports: [new transports.Console()],
   level: 'silly',
 });
