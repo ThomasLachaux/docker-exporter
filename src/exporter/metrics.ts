@@ -9,7 +9,7 @@ const pullLimit = new Gauge({
 });
 
 const pullRemaining = new Gauge({
-  name: 'docker_remaining_total',
+  name: 'docker_pull_remaining',
   help: 'Total remaining pulls in 6 hours',
   labelNames: ['name'],
 });
