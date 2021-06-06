@@ -41,17 +41,22 @@ export default class Docker {
 
   async getPulls(firstTry = true): Promise<DockerResponse> {
     try {
+      logger.silly(`[${this.name}] Start pulling`);
       const { headers } = await axios.head('https://registry-1.docker.io/v2/ratelimitpreview/test/manifests/latest', {
         headers: { Authorization: `Bearer ${this.token}` },
       });
 
-      return {
+      const response = {
         limit: Number(headers['ratelimit-limit'].split(';')[0]),
         remaining: Number(headers['ratelimit-remaining'].split(';')[0]),
       };
+
+      logger.silly(`Limit: ${response.limit}. Remaining: ${response.remaining}`);
+
+      return response;
     } catch (error) {
       if (firstTry) {
-        logger.warn('Token expired or never created, try to authenticate');
+        logger.warn(`[${this.name}] Token expired or never created, try to authenticate`);
         await this.authenticate();
         return this.getPulls(false);
       }

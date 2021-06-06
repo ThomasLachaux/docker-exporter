@@ -1,7 +1,7 @@
 {
-  "name": "cassiopee-bouffe-api",
+  "name": "docker-exporter",
   "version": "1.0.0",
-  "description": "API to manage the food with payment",
+  "description": "Docker exporter to know how many pull there are left",
   "contributors": [
     {
       "name": "Thomas de Lachaux",

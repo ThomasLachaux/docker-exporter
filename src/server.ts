@@ -7,6 +7,7 @@ try {
   app.listen(env.api.port, () => {
     logger.info(`Node environment: ${process.env.NODE_ENV}`);
     logger.info(`Listening on port ${env.api.port}`);
+    logger.info(`Refresh metrics every ${env.metricCollectionInterval}s`);
   });
 } catch (error) {
   logger.error(error);

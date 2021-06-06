@@ -33,6 +33,7 @@ const loadDockerConfig = () => {
 const env = {
   development: process.env.NODE_ENV === 'development',
   production: process.env.NODE_ENV === 'production',
+  metricCollectionInterval: Number(process.env.METRIC_COLLECTION_INTERVAL),
   api: {
     port: Number(process.env.API_PORT) || 3000,
     prefix: process.env.API_PREFIX || '/',
