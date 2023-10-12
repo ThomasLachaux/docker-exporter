@@ -28,7 +28,7 @@
     "prom-client": "^13.1.0",
     "split": "^1.0.1",
     "typescript": "^4.3.2",
-    "winston": "^3.3.3"
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
